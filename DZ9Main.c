@@ -4,11 +4,13 @@
 #include <time.h>
 
 int volStop = 2584, volStart = 0, volStep = 1; // Task1
-int sizeRows = 5, sizeCols = 5, volMax = 10;//127;  // Task2 
+int sizeRows = 5, sizeCols = 5, volMax = 10;   // 127;  // Task2
 
 void Task1(int volStop, int volStart, int volStep, bool isZeroItaration); // Фибоначчи
 void Task2(int volMax);
+int **fullArr(int (*arr)[sizeCols], int sizeRows, int sizeCols, int volMax);
 void writeConsoleArr(int (*arr)[sizeCols], int sizeRows);                    // Task2
+int pressButton(int volMax);                                                 // Task2
 void findCells(int input, int (*arr)[sizeCols], int sizeCols, int sizeRows); // Task2
 void openCells(int x, int y);                                                // Task2
 
@@ -41,21 +43,35 @@ void Task2(int volMax)
     printf("\nTask2 start\n");
     int board[sizeRows][sizeCols];
 
+    **board = fullArr(board, sizeRows, sizeCols, volMax);
+    writeConsoleArr(board, sizeRows);
+
+    int input = pressButton(volMax);
+
+    findCells(input, board, sizeCols, sizeRows);
+}
+
+int **fullArr(int (*arr)[sizeCols], int sizeRows, int sizeCols, int volMax)
+{
+    srand(time(0));
+
     for (int i = 0; i < sizeCols; i++)
     {
         for (int j = 0; j < sizeRows; j++)
         {
-            *(*(board + i) + j) = rand() % volMax;
+            *(*(arr + i) + j) = rand() % volMax;
         }
     }
 
-    writeConsoleArr(board, sizeRows);
+    return **arr;
+}
 
+int pressButton(int volMax)
+{
     int input;
     printf("In volume 0 - %d: ", volMax);
     scanf("%d", &input);
-
-    findCells(input, board, sizeCols, sizeRows);
+    return input;
 }
 
 void findCells(int input, int (*arr)[sizeCols], int sizeCols, int sizeRows)
